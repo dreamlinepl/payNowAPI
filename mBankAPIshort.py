@@ -12,31 +12,11 @@ import hashlib
 import base64
 import webbrowser
 import uuid
-import time
-import sys
+
 
 def calculate_hmac(data, key):
     hashed_object = hmac.new(key, data, hashlib.sha256).digest()
     return base64.b64encode(hashed_object)
-
-def processing_spinner(duration):
-    # Define the spinner characters (you can customize these)
-    spinner = ['*', '**', '***', '****','*****', '******', '*******', '********']
-
-    # Calculate the number of iterations based on the duration
-    iterations = int(duration / len(spinner))
-
-    for _ in range(iterations):
-        for frame in spinner:
-            sys.stdout.write(f"\rProcessing {frame}")
-            sys.stdout.flush()
-            time.sleep(0.5)  # Adjust the sleep time as needed
-
-    # Clear the line after the spinner
-    sys.stdout.write("\r" + " " * 20 + "\r")
-    sys.stdout.flush()
-
-
 
 #user_email = input("Enter user email:")
 user_email = "test@test.pl"
@@ -103,7 +83,6 @@ webbrowser.open(redirectURL)
 print ("The payment link created successfully!")
 print (redirectURL)
 
-processing_spinner(5)
 
 #%%
 
@@ -114,7 +93,6 @@ headers = {
 }
 
 while  True:
-    processing_spinner(8)
     response = requests.request("GET", url, headers=headers, data=payload) 
     python_dict = json.loads(response.text)
     status = python_dict ["status"]
