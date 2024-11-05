@@ -9,6 +9,7 @@ import requests
 import hashlib
 import urllib.parse
 import xml.etree.ElementTree as ET
+import random
 
 
 def calculate_sha256(data):
@@ -18,16 +19,29 @@ def calculate_sha256(data):
     sha256_hash = hashlib.sha256(data).hexdigest()
     return sha256_hash
 
-service_id = "1000351"
-order_id = "27728tfcds30"
-amount = "11000.00"
-gateway_id = "0"
-currency = "EUR"
+service_id = "1001812"
+order_id = str(random.randint(1000000, 9999999))
+amount = "30.00"
+gateway_id = "1503"
+currency = "PLN"
 user_email= 'marcin.szpecht@volanti.vip'
 language ="EN"
-key = '3dcda8051d4028f01190e841c42708e5a57981c7'
+RecurringAcceptanceState = 'ACCEPTED'
+RecurringAction = 'INIT_WITH_PAYMENT'
 
-data = [service_id, order_id, amount, gateway_id, currency, user_email, language, key]
+key = 'ffd9546e43bb013dc1647ec8b0ab765993bfb341'
+
+data = [service_id, 
+        order_id, 
+        amount, 
+        gateway_id, 
+        currency, 
+        user_email, 
+        language, 
+        RecurringAcceptanceState, 
+        RecurringAction, 
+        key]
+
 string_to_hash='|'.join(data)
 print (string_to_hash)
 # print (string_to_hash)
@@ -42,6 +56,8 @@ data = {
     "Currency" : currency,
     "CustomerEmail" : user_email,
     "Language" : language,
+    "RecurringAcceptanceState" : RecurringAcceptanceState,
+    "RecurringAction" : RecurringAction,
     "Hash" : hash_value_req
     }
 
@@ -54,7 +70,7 @@ headers = {
 
 url = "https://testpay.autopay.eu/payment"
 response = requests.request("POST", url, headers=headers, data=payload)
-# print (response.text)
+print (response.text)
 # Parse the XML data
 root = ET.fromstring(response.text)
 
