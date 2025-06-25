@@ -17,12 +17,12 @@ from config import service_id, key, BASE_URL
 def calculate_sha256(data):
     if isinstance(data, str):
         data = data.encode()
-    # Calculate SHA-256 hash
+    # Calculate SHA-256 hashxxxxx``
     sha256_hash = hashlib.sha256(data).hexdigest()
     return sha256_hash
 
 order_id = str(random.randint(1000000, 9999999))
-amount = "4500.00"
+amount = "3500.00"
 gateway_id = "1500"
 currency = "EUR"
 user_email= 'mlody@email.com'
@@ -40,7 +40,7 @@ data = [service_id,
         key]
 
 string_to_hash='|'.join(data)
-# print (string_to_hash)
+print (string_to_hash)
 hash_value_req=calculate_sha256(string_to_hash)
 # print (hash_value)
 
@@ -68,7 +68,7 @@ headers = {
 url = BASE_URL+'/payment'
 response = requests.request("POST", url, headers=headers, data=payload)
 print("\n[{}] RESPONSE /payment:".format(datetime.now().isoformat()))
-#print(response.text)
+print(response.text)
 # Parse the XML data
 root = ET.fromstring(response.text)
 
@@ -77,15 +77,19 @@ status = root.find('status').text
 redirecturl = root.find('redirecturl').text
 orderID = root.find('orderID').text
 remoteID = root.find('remoteID').text
-#hash_value_answ = root.find('hash').text
+hash_value_answ = root.find('hash').text
 
 #Mandatory response hash check
 data = [status, redirecturl, orderID, remoteID, key]
 string_to_hash ='|'.join(data)
-#hash_value=calculate_sha256(string_to_hash)
+hash_value=calculate_sha256(string_to_hash)
 
-#if hash_value == hash_value_answ:
 print("Remote ID:", remoteID)
 print("Order ID:", orderID)
 print("Status:", status)
 print("Redirect URL:", redirecturl)
+
+if hash_value == hash_value_answ:
+    print("✅ Hash OK")
+else:
+    print("❌ Hash mismatch")

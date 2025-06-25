@@ -20,7 +20,7 @@ def calculate_sha256(data):
     return sha256_hash
 
 
-remoteID = "A91M334UUP"
+remoteID = "A6GVYDI7GE"
 message_id = uuid.uuid4().hex
 
 
@@ -31,7 +31,7 @@ data = [service_id,
         key]
 
 string_to_hash='|'.join(data)
-print (string_to_hash)
+#print (string_to_hash)
 # print (string_to_hash)
 hash_value_req=calculate_sha256(string_to_hash)
 # print (hash_value)
@@ -66,6 +66,7 @@ hash_value_answ = root.find('hash').text
 #Mandatory response hash check
 data = [service, messageID, confirmation, reason, key]
 string_to_hash ='|'.join(data)
+#print (string_to_hash)
 hash_value=calculate_sha256(string_to_hash)
 
 print("Reason:", reason)\
